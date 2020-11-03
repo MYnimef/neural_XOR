@@ -22,7 +22,7 @@ int main()
     while (task)
     {   
         ifstream file_w("weights.txt");
-        if (!file_w.is_open())  //если файл не открыт
+        if (!file_w.is_open())  //Если файл не открыт
         {
             neural_learning();
         }
@@ -99,8 +99,8 @@ void set_weights(const int n, double w1[], double w2[], double w3[])
 void neural_learning()
 {
     const int in = 2;   //Кол-во нейронов на входе
-    const int trainSet = 4; //Кол-во тренировачных сетов
-    const int n = 3;    //Кол-во нейронов в скрытом слое
+    const int trainSet = 4; //Кол-во тренировочных сетов
+    const int n = 5;    //Кол-во нейронов в скрытом слое
     double k = 0.3;  //Коэффициент
 
     int input[trainSet][in] =   //Значения на входе
@@ -120,21 +120,6 @@ void neural_learning()
 
     double w_input[in][n], w_output[n]; //Весовые коэффициенты между входом и скрытым слоем и между скрытым слоем и выходом
     random_weights(n, w_input[0], w_input[1], w_output);    //Придание им рандомных значений
-    for (int i = 0; i < n; i++)
-    {
-        cout << w_input[0][i] << " ";
-    }
-    cout << endl;
-    for (int i = 0; i < n; i++)
-    {
-        cout << w_input[1][i] << " ";
-    }
-    cout << endl;
-    for (int i = 0; i < n; i++)
-    {
-        cout << w_output[i] << " ";
-    }
-    cout << endl;
     
     int maxEpoch = 100000; //Кол-во Эпох
     int delta_load = maxEpoch / 10, loading = delta_load;   //Переменные для реализации "загрузки"
@@ -171,8 +156,8 @@ void neural_learning()
             for (int i = 0; i < n; i++)
             {
                 delta_w_output[i] = k * sigma_out * hiddenLayer[i];
-                //sigma_in[i] = delta_w_output[i] * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);        //Тут все еще ведутся
-                sigma_in[i] = (output[train] - result) * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);   //дискуссии
+                sigma_in[i] = delta_w_output[i] * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);        //Тут все еще ведутся
+                //sigma_in[i] = (output[train] - result) * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);   //дискуссии
 
                 w_output[i] += delta_w_output[i];
             }
