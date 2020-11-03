@@ -120,6 +120,21 @@ void neural_learning()
 
     double w_input[in][n], w_output[n]; //Весовые коэффициенты между входом и скрытым слоем и между скрытым слоем и выходом
     random_weights(n, w_input[0], w_input[1], w_output);    //Придание им рандомных значений
+    for (int i = 0; i < n; i++)
+    {
+        cout << w_input[0][i] << " ";
+    }
+    cout << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << w_input[1][i] << " ";
+    }
+    cout << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << w_output[i] << " ";
+    }
+    cout << endl;
     
     int maxEpoch = 100000; //Кол-во Эпох
     int delta_load = maxEpoch / 10, loading = delta_load;   //Переменные для реализации "загрузки"
@@ -141,7 +156,7 @@ void neural_learning()
                 double pre_hiddenLayer = 0;
                 for (int j = 0; j < in; j++)
                 {
-                    pre_hiddenLayer += input[train][0] * w_input[j][i];
+                    pre_hiddenLayer += input[train][j] * w_input[j][i];
                 }
                 hiddenLayer[i] = sigmoidFunction(pre_hiddenLayer);
                 pre_result += hiddenLayer[i] * w_output[i];
