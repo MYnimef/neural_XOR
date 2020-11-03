@@ -103,8 +103,21 @@ void neural_learning()
     const int n = 3;    //Кол-во нейронов в скрытом слое
     double k = 0.3;  //Коэффициент
 
-    int input[trainSet][in] = { {0, 0}, {0, 1}, {1, 0}, {1, 1} };   //
-    int output[trainSet] = { 0, 1, 1, 0 };  //
+    int input[trainSet][in] =   //
+    { 
+        {0, 0}, 
+        {0, 1},
+        {1, 0},
+        {1, 1} 
+    };
+    int output[trainSet] =  //
+    { 
+        0,
+        1,
+        1,
+        0
+    };
+
     double w_input[in][n], w_output[n]; //
     random_weights(n, w_input[0], w_input[1], w_output);    //
     
@@ -112,7 +125,7 @@ void neural_learning()
     int delta_load = maxEpoch / 10, loading = delta_load;   //Переменные для реализации "загрузки"
     for (int epoch = 0; epoch < maxEpoch; epoch++)   //Начало работы самой нейросети 
     {
-        if ((epoch + 1) == loading) //Собственно сама загрузка, 10 звездочек - финал обучения
+        if ((epoch + 1) == loading) //Собственно сама загрузка, 10 звездочек в консоле - финал обучения
         {
             cout << '*';
             loading += delta_load;
@@ -122,14 +135,15 @@ void neural_learning()
         {
             //Forward
 
-            double pre_hiddenLayer[n], hiddenLayer[n], pre_result = 0;   //Расчет значений до скрытого слоя, в скрытом слое и то, что из него выйдет
+            double hiddenLayer[n], pre_result = 0;   //Расчет значений до скрытого слоя, в скрытом слое и то, что из него выйдет
             for (int i = 0; i < n; i++)
             {
+                double pre_hiddenLayer = 0;
                 for (int j = 0; j < in; j++)
                 {
-                    pre_hiddenLayer[i] = input[train][0] * w_input[j][i];
+                    pre_hiddenLayer += input[train][0] * w_input[j][i];
                 }
-                hiddenLayer[i] = sigmoidFunction(pre_hiddenLayer[i]);
+                hiddenLayer[i] = sigmoidFunction(pre_hiddenLayer);
                 pre_result += hiddenLayer[i] * w_output[i];
             }
             double result = sigmoidFunction(pre_result);   //Конечный результат
@@ -142,7 +156,8 @@ void neural_learning()
             for (int i = 0; i < n; i++)
             {
                 delta_w_output[i] = k * sigma_out * hiddenLayer[i];
-                sigma_in[i] = delta_w_output[i] * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);
+                //sigma_in[i] = delta_w_output[i] * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);
+                sigma_in[i] = (output[train] - result) * w_output[i] * hiddenLayer[i] * (1 - hiddenLayer[i]);
 
                 w_output[i] += delta_w_output[i];
             }
