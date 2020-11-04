@@ -4,7 +4,7 @@
 #include <string>
 #include <ctime>
 #include <cmath>
-#include <A:\\Coding\\Cpp\\Git\\neural_XOR\\neuralXOR\\ohMy.cpp>    //Поменяйте себе путь к файлу
+#include "ohMy.cpp"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ double sigmoidFunction(double x);
 
 int main()
 {
-    cout << "This is a nerural network that calculates XOR." << endl;
+    cout << "This is the nerural network that calculates XOR." << endl;
     bool task = true;
     while (task)
     {   
@@ -59,17 +59,17 @@ void get_weights(const int n, double w1[], double w2[], double w3[])
     {
         string num;
         file_w >> num;
-        if (i < 3)
+        if (i < n)
         {
             w1[i] = stof(num);
         }
-        else if (i < 6)
+        else if (i < 2 * n)
         {
-            w2[i - 3] = stof(num);
+            w2[i - n] = stof(num);
         }
         else
         {
-            w3[i - 6] = stof(num);
+            w3[i - 2 * n] = stof(num);
         }
     }
     file_w.close();
@@ -80,17 +80,17 @@ void set_weights(const int n, double w1[], double w2[], double w3[])
     ofstream file_w("weights.txt");
     for (int i = 0; i < 3 * n; i++)
     {
-        if (i < 3)
+        if (i < n)
         {
             file_w << fixed << w1[i] << endl;
         }
-        else if (i < 6)
+        else if (i < 2 * n)
         {
-            file_w << fixed << w2[i - 3] << endl;
+            file_w << fixed << w2[i - n] << endl;
         }
         else
         {
-            file_w << fixed << w3[i - 6] << endl;
+            file_w << fixed << w3[i - 2 * n] << endl;
         }
     }
     file_w.close();
@@ -133,7 +133,7 @@ void neural_learning()
 
         for (int train = 0; train < trainSet; train++)
         {
-            //Forward
+            //Forward propagation
 
             double hiddenLayer[n], pre_result = 0;   //Расчет значений до скрытого слоя, в скрытом слое и то, что из него выйдет
             for (int i = 0; i < n; i++)
@@ -147,9 +147,8 @@ void neural_learning()
                 pre_result += hiddenLayer[i] * w_output[i];
             }
             double result = sigmoidFunction(pre_result);   //Конечный результат
-            //cout << result << endl;   //Чисто для проверки
 
-            //Backward
+            //Backward propagation
 
             double sigma_out = (output[train] - result) * result * (1 - result);     //Погрешность суммы до выхода, использование производной функции преобразования
             double delta_w_output[n], sigma_in[n];
@@ -179,7 +178,7 @@ void neural_learning()
 
 double neuralNetwork(int input[])
 {
-    const int n = 3;    //Кол-во скрытых слоев
+    const int n = 5;    //Кол-во скрытых слоев
     const int in = 2;
     double w_input[in][n], w_output[n];
     get_weights(n, w_input[0], w_input[1], w_output);
