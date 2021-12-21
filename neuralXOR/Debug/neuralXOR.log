@@ -1,3 +1,0 @@
-﻿  neuralXOR.cpp
-A:\Coding\Cpp\Git\neural_XOR\neuralXOR\neuralXOR.cpp(46,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  neuralXOR.vcxproj -> A:\Coding\Cpp\Git\neural_XOR\neuralXOR\Debug\neuralXOR.exe
